@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton, QLin
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5 import uic
 import sys
+import random
+
 
 
 class UI(QMainWindow):
@@ -12,22 +14,57 @@ class UI(QMainWindow):
         uic.loadUi("password_generator.ui", self)
         self.setFixedSize(698, 528)
 
-        # Define Our Widgets
-        self.picLabel = self.findChild(QLabel, "picLabel")
-        self.passwordLine = self.findChild(QLineEdit, "passwordLine")
-        self.passwordGenerate = self.findChild(QPushButton, "passwordGenerate")
-        self.passwordLenghts = self.findChild(QSlider, "passwordLenghtsVertical")
-        self.number = self.findChild(QCheckBox, "numberCheckbox")
-        self.upper = self.findChild(QCheckBox, "upperCheckBox")
-        self.symbol = self.findChild(QCheckBox, "symbolCheckBox")
-
         # Add Image To Label and Icon
         self.setWindowIcon(QIcon("png/002-password.png"))
         self.pixmapPic = QPixmap("png/001-password-code.png")
         self.picLabel.setPixmap(self.pixmapPic)
 
+        # Define Our Widgets
+        self.picLabel = self.findChild(QLabel, "picLabel")
+        self.passwordLine = self.findChild(QLineEdit, "passwordLine")
+        self.passwordGenerate = self.findChild(QPushButton, "passwordGenerate")
+        self.passwordLengths = self.findChild(QSlider, "passwordLengthsVertical")
+        self.passwordLengthsLabel = self.findChild(QLabel, "passwordLengthsLabel")
+        self.number = self.findChild(QCheckBox, "numberCheckbox")
+        self.upper = self.findChild(QCheckBox, "upperCheckBox")
+        self.symbol = self.findChild(QCheckBox, "symbolCheckBox")
+
+        # Click The Button
+        self.passwordGenerate.clicked.connect(self.generate_password)
+        self.number.toggled.connect(self.generate_password)
+        self.symbol.toggled.connect(self.generate_password)
+        self.upper.toggled.connect(self.generate_password)
+        # The Number Of Character
+        self.passwordLengths.valueChanged.connect(self.generate_password)
+        self.passwordLengths.setMinimum(5)
+        self.passwordLengths.setMaximum(20)
+        self.passwordLengths.setValue(5)
+        self.passwordLengths.setTickPosition(QSlider.TicksBelow)
+        self.passwordLengths.setTickInterval(1)
+
         # Show The App
         self.show()
+
+    # Define The Generate Password Function
+    def generate_password(self, value):
+        # Change The Number Of Password Lengths
+        self.passwordLengthsLabel.setText(str(value))
+        # The Letter and Symbols and Number For Making Password
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+                   't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+        if self.upper.isChecked():
+            upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+            letters += upper
+        if self.number.isChecked():
+            numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            letters += numbers
+        if self.symbol.isChecked():
+            symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+            letters += symbols
+
+        
 
 
 # Initialize The App
