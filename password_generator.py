@@ -30,10 +30,12 @@ class UI(QMainWindow):
 
         # Click The Button
         self.passwordGenerate.clicked.connect(self.generate_password)
-        self.button_clicked = False
+        self.passwordLine.editingFinished.connect(self.generate_password)
+
+        # Change The Number Of Slider
+        self.passwordLengths.valueChanged.connect(self.move)
 
         # The Number Of Character
-        self.passwordLengths.valueChanged.connect(self.move)
         self.passwordLengths.setMinimum(5)
         self.passwordLengths.setMaximum(20)
         self.passwordLengths.setValue(5)
@@ -58,13 +60,13 @@ class UI(QMainWindow):
 
     # Define The Generate Password Function
     def generate_password(self):
-
         # Password letter List
         password_list = []
-        # The Letter and Symbols and Number For Making Password
+        # The Default Letters For Making Password
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
                    't', 'u', 'v', 'w', 'x', 'y', 'z']
 
+        # Adding Uppercase Letters and Number and Symbol
         if self.upper.isChecked():
             upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -75,12 +77,23 @@ class UI(QMainWindow):
         if self.symbol.isChecked():
             symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
             letters += symbols
+
+        # Shuffle The Letters After Add Number, Uppercase, Symbol
         random.shuffle(letters)
+
+        # Choose Randomly From The Letters For Generating The Password
         for i in range(int(self.slider_value)):
             password_letter = random.choice(letters)
             password_list.append(password_letter)
         password = "".join(password_list)
+
+        # Display The Password Into Password Line
         self.passwordLine.setText(password)
+
+        # Copy The Text Of Password
+        text_copy = self.passwordLine.text()
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text_copy)
 
 
 # Initialize The App
