@@ -30,6 +30,7 @@ class UI(QMainWindow):
 
         # Click The Button
         self.passwordGenerate.clicked.connect(self.generate_password)
+        self.button_clicked = False
 
         # The Number Of Character
         self.passwordLengths.valueChanged.connect(self.move)
@@ -44,20 +45,22 @@ class UI(QMainWindow):
         self.upper.setChecked(True)
         self.symbol.setChecked(True)
 
+        # Define Variable For Using Value Into generate_password Function
+        self.slider_value = 5
+
         # Show The App
         self.show()
 
     # Define The Change Value Slider Function
     def move(self, value):
-        # Change The Number Of Password Lengths
         self.passwordLengthsLabel.setText(str(value))
+        self.slider_value = value
 
     # Define The Generate Password Function
-    def generate_password(self, value):
+    def generate_password(self):
+
         # Password letter List
         password_list = []
-        self.passwordLengths.valueChanged.connect(self.move)
-        print(str(self.passwordLengths.valueChanged.connect(self.move)))
         # The Letter and Symbols and Number For Making Password
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
                    't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -72,12 +75,12 @@ class UI(QMainWindow):
         if self.symbol.isChecked():
             symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
             letters += symbols
-
-        # for i in range(value):
-        #     password_letter = random.choice(letters)
-        #     password_list.append(password_letter)
-        # password = "".join(password_list)
-        # self.passwordLine.setText(password)
+        random.shuffle(letters)
+        for i in range(int(self.slider_value)):
+            password_letter = random.choice(letters)
+            password_list.append(password_letter)
+        password = "".join(password_list)
+        self.passwordLine.setText(password)
 
 
 # Initialize The App
