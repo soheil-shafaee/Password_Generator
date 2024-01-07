@@ -20,6 +20,13 @@ A simple Password Generator that creates secure and random passwords.
 - Run the script and follow the on-screen instructions to generate a password.
 - Adjust settings in the script for different password variations.
 
+## Video of Usage
+
+
+https://github.com/soheil-shafaee/Password_Generator/assets/111058416/4d67b0fc-a854-4721-b126-52659c478bdf
+
+
+
 ## Configuration
 
 - Modify the script directly to customize password generation settings.
